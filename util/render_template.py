@@ -17,6 +17,7 @@ import aiohttp
 
 
 async def render_page(id, secure_hash):
+    print("------ starting Render page -----------")
     file_data=await get_file_ids(LazyPrincessBot, int(LOG_CHANNEL), int(id))
     if file_data.unique_id[:6] != secure_hash:
         logging.debug(f'link hash: {secure_hash} - {file_data.unique_id[:6]}')
@@ -41,3 +42,4 @@ async def render_page(id, secure_hash):
                     file_size = humanbytes(int(u.headers.get('Content-Length')))
                     html = (await r.read()) % (heading, file_data.file_name, src, file_size)
     return html
+print("------ Ending Render page -----------")
