@@ -61,12 +61,12 @@ async def start_services():
         with open(name) as a:
             patt = Path(a.name)
             plugin_name = patt.stem.replace(".py", "")
-            plugins_dir = Path(f"Adarsh/bot/plugins/{plugin_name}.py")
-            import_path = ".plugins.{}".format(plugin_name)
+            plugins_dir = Path(f"plugins/{plugin_name}.py")
+            import_path = "plugins.{}".format(plugin_name)
             spec = importlib.util.spec_from_file_location(import_path, plugins_dir)
             load = importlib.util.module_from_spec(spec)
             spec.loader.exec_module(load)
-            sys.modules["Adarsh.bot.plugins." + plugin_name] = load
+            sys.modules["plugins." + plugin_name] = load
             print("Imported => " + plugin_name)
     if ON_HEROKU:
         print("------------------ Starting Keep Alive Service ------------------")
