@@ -34,32 +34,6 @@ async def root_route_handler(_):
 
 @routes.get(r"/watch/{path:\S+}", allow_head=True)
 async def stream_handler(request: web.Request):
-    print("------ starting watch/path -----------")
-    try:
-        path = request.match_info["path"]
-        match = re.search(r"^([a-zA-Z0-9_-]{6})(\d+)$", path)
-        if match:
-            secure_hash = match.group(1)
-            id = int(match.group(2))
-        else:
-            id = int(re.search(r"(\d+)(?:\/\S+)?", path).group(1))
-            secure_hash = request.rel_url.query.get("hash")
-        return web.Response(text=await render_page(id, secure_hash), content_type='text/html')
-    except InvalidHash as e:
-        raise web.HTTPForbidden(text=e.message)
-    except FIleNotFound as e:
-        raise web.HTTPNotFound(text=e.message)
-    except (AttributeError, BadStatusLine, ConnectionResetError):
-        pass
-    except Exception as e:
-        logging.critical(e.with_traceback(None))
-        raise web.HTTPInternalServerError(text=str(e))
-    print("------ Completed watch-path -----------")
-    print("-----------------")
-    
-
-@routes.get(r"/watch/{path:\S+}", allow_head=True)
-async def stream_handler(request: web.Request):
     try:
         path = request.match_info["path"]
         match = re.search(r"^([a-zA-Z0-9_-]{6})(\d+)$", path)
